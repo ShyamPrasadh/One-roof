@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# One Roof Building Solutions — online store
 
-## Getting Started
+Customer app (mobile-first, installable web app) and admin app, in one Next.js project.
 
-First, run the development server:
+- Customer: `/` (shop), `/product/[id]`, `/cart`, `/checkout`, `/orders`, `/login`, `/register`
+- Admin: `/admin` (sign in at `/admin/login`) — dashboard, orders, products & stock, settings
+- Invoice: `/invoice/[id]` — GST invoice, print or save as PDF from the browser
+
+## Run locally
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Default admin login (change it before going live):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Phone: `9999999999`
+- Password: `admin@123`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Set these before the first run to use your own values: `ADMIN_PHONE`, `ADMIN_PASSWORD`, `SESSION_SECRET`.
 
-## Learn More
+## Current state
 
-To learn more about Next.js, take a look at the following resources:
+Implemented: catalogue with categories and search, stock that goes down on order and comes back on cancel,
+retail and contractor accounts (phone + password, optional GSTIN), cart, checkout with cash on delivery,
+distance-based delivery fee with minimum order (delivery only, pickup has none), GST breakdown
+(CGST/SGST within Tamil Nadu, IGST otherwise), GST invoices, order status tracking, admin
+order/product/stock/settings management.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Still to connect or set:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Database:** data is stored in `data/db.json` for now (git-ignored). Supabase is the planned
+  database for production; `src/lib/store.ts` is the only file that needs to change.
+- **Online payment:** Razorpay is not connected. The option is shown as "coming soon".
+- **Store location:** `Settings → Store latitude/longitude` is an approximate placeholder. Set the exact location.
+- **Delivery pricing:** base ₹40, ₹10/km, minimum ₹500 and 25 km maximum are placeholders. Change them in Settings.
+- **Products:** the six products in the seed data are samples. Replace prices, GST rates and HSN codes.
+- **App icons:** the web app manifest has no icons yet, so the "install" prompt needs icon files added.

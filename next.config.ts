@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  cacheComponents: true,
-  partialPrefetching: true,
+  // Orders, stock and prices are live data, so pages render per request (see src/app/layout.tsx).
+  cacheComponents: false,
   turbopack: {
     rules: {
       "*.css": {
