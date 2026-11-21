@@ -1,4 +1,5 @@
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import type { Db } from "./types";
 import { hashPassword, newId } from "./security";
@@ -7,7 +8,10 @@ import { hashPassword, newId } from "./security";
  * File-based store used until Supabase is connected. All reads and writes go through
  * readDb/writeDb so the rest of the app doesn't depend on how data is persisted.
  */
-const DB_PATH = process.env.DB_PATH ?? path.join(process.cwd(), "data", "db.json");
+// On Vercel the project folder is read-only; only /tmp is writable (and it is not shared between instances).
+const DB_PATH =
+  process.env.DB_PATH ??
+  (process.env.VERCEL ? path.join(os.tmpdir(), "one-roof-db.json") : path.join(process.cwd(), "data", "db.json"));
 
 export function readDb(): Db {
   if (!fs.existsSync(/*turbopackIgnore: true*/ DB_PATH)) {
